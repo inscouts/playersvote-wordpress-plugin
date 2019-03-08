@@ -1,4 +1,47 @@
-/**
- * All of the CSS for your admin-specific functionality should be
- * included in this file.
- */
+/*//////////////////////////////////////////////////////////////////
+[ Table ]*/
+.pv-table {
+    background-color: #fff;
+    width: 100%;
+
+    overflow: hidden;
+    margin-top: 24px;
+}
+
+.pv-table th, .pv-table td {
+    font-weight: unset;
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+.pv-table pre {
+    margin: 0;
+}
+
+.pv-table thead th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+
+    border-bottom: 1px solid #eee;
+
+    font-size: 14px;
+    text-transform: uppercase;
+    color: #00abed;
+    line-height: 1.4;
+
+    background-color: transparent;
+}
+
+.pv-table tbody td {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    font-size: 15px;
+    color: #808080;
+    line-height: 1.4;
+}
+
+
+.pv-table tr td {
+    border-bottom: 1px solid #f2f2f2;
+}

@@ -152,4 +152,36 @@ class Playersvote_Admin {
 		}
 		return $option;
 	}
+
+	private function send_request($path) {
+		$client = new GuzzleHttp\Client(['base_uri' => 'https://219l7y1jf5.execute-api.eu-central-1.amazonaws.com/production/api/']);
+		$response = $client->request('GET', $path, [
+			'headers' => [
+				'Authorization' => 'Bearer ' . $this->get_api_key()
+			]
+		]);
+		return json_decode($response->getBody(), true);
+	}
+
+	public function get_sources() {
+		try {
+			return $this->send_request('sources');
+		} catch (Exception $err) {
+			var_dump($err->getMessage());
+		}
+	}
+
+	public function get_games($source) {
+		try {
+			return $this->send_request('sources/'.$source.'/games');
+		} catch (Exception $err) {
+			var_dump($err->getMessage());
+		}
+	}
+
+	public function format_date_string($dateStr) {
+		$date = strtotime($dateStr);
+		return date('d.m.Y H:i', $date);
+	}
+
 }

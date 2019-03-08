@@ -1,0 +1,6 @@
+{
+    "name": "inscouts/playersvote-wordpress-plugin",
+    "require": {
+        "guzzlehttp/guzzle": "^6.3"
+    }
+}
