@@ -56,7 +56,8 @@
 				<thead>
 				<tr>
 					<th>Date</th>
-					<th>Teams</th>
+					<th>Team 1</th>
+					<th>Team 2</th>
 					<th>Location</th>
 					<th>Week</th>
 					<th>Shortcode</th>
@@ -66,7 +67,8 @@
 				<?php foreach($games as $game): ?>
 					<tr>
 						<td><?php echo $this->format_date_string($game['start']) ?></td>
-						<td><?php echo $game['team_1']['name'] . ' vs. ' . $game['team_2']['name'] ?></td>
+						<td><?php echo $game['team_1']['name'] ?></td>
+						<td><?php echo $game['team_2']['name'] ?></td>
 						<td><?php echo $game['location'] ?></td>
 						<td><?php echo $game['week'] ?></td>
 						<td><pre>[playersvote-widget source="<?php echo $selected_source ?>" id="<?php echo $game['id']?>"]</pre></td>
