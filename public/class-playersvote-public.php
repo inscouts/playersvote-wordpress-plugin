@@ -40,6 +40,8 @@ class Playersvote_Public {
 	 */
 	private $version;
 
+	private $settings;
+
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -51,6 +53,7 @@ class Playersvote_Public {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
+		$this->settings = new Playersvote_Settings($this->plugin_name);
 
 	}
 
@@ -98,6 +101,14 @@ class Playersvote_Public {
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/playersvote-public.js', array( 'jquery' ), $this->version, false );
 
+	}
+
+	public function generate_widget_code($atts) {
+		$atts = array_change_key_case( (array)$atts, CASE_LOWER );
+		$api_key = $this->settings->get_setting('api-key');
+		$source = $atts['source'];
+		$id = $atts['id'];
+		return "<div id=\"playersvote-widget\"></div><script type=\"text/javascript\" src=\"https://matchday.playersvote.com/widget.bundle.js\"></script><script>window.initWidget({ apiKey: '$api_key', url: 'https://matchday.playersvote.com', source:'$source', gameId: $id }); </script>";
 	}
 
 }

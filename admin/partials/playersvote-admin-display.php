@@ -28,8 +28,11 @@
 	<div>
 		<?php
 		$api_key = $this->get_api_key();
+		$token = $this->get_token();
+		$has_credentials = $api_key && $token;
+
 		$selected_source = $_GET['source'];
-		if (isset($api_key) && $api_key) {
+		if (isset($has_credentials) && $has_credentials) {
 			$sources = $this->get_sources();
 			?>
 

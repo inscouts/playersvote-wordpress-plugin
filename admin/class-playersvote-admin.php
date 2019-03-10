@@ -40,6 +40,8 @@ class Playersvote_Admin {
 	 */
 	private $version;
 
+	private $settings;
+
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -51,6 +53,7 @@ class Playersvote_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
+		$this->settings = new Playersvote_Settings($this->plugin_name);
 
 	}
 
@@ -113,51 +116,28 @@ class Playersvote_Admin {
 	}
 
 	public function init_admin() {
-		register_setting( $this->plugin_name.'_options', $this->plugin_name.'_options' );
 
-		// add_settings_section( $id, $title, $callback, $menu_slug );
-		add_settings_section(
-			$this->plugin_name . '-user-display-options', // section
-			apply_filters( $this->plugin_name . '-user-display-section-title', __( '', $this->plugin_name ) ),
-			array( $this, 'display_options_section' ),
-			$this->plugin_name
-		);
+		$this->settings->register_settings();
 
-		// add_settings_field( $id, $title, $callback, $menu_slug, $section, $args );
-		add_settings_field(
-			'api-key',
-			apply_filters( $this->plugin_name . '-api-key-user-label', __( 'API key', $this->plugin_name ) ),
-			array( $this, 'api_key_options_field' ),
-			$this->plugin_name,
-			$this->plugin_name . '-user-display-options' // section to add to
-		);
+		$this->settings->add_section();
 
-	}
-
-	public function display_options_section( $params ) {
-		echo '<p>' . $params['title'] . '</p>';
-	}
-
-	public function api_key_options_field() {
-		$api_key = $this->get_api_key();
-		?><input type="text" id="<?php echo $this->plugin_name; ?>_options[api-key]" name="<?php echo $this->plugin_name; ?>_options[api-key]" value="<?php echo $api_key  ?>" />
-		<p class="description">API key from <a href="https://platform.playersvote.com">platform.playersvote.com</a></p> <?php
+		$this->settings->add_setting('api-key', 'API Key', "API key from <a href=\"https://platform.playersvote.com\">platform.playersvote.com</a>");
+		$this->settings->add_setting('token', 'Token', "Token from <a href=\"https://platform.playersvote.com\">platform.playersvote.com</a>");
 	}
 
 	public function get_api_key() {
-		$options 	= get_option( $this->plugin_name . '_options' );
-		$option 	= '';
-		if ( ! empty( $options['api-key'] ) ) {
-			$option = $options['api-key'];
-		}
-		return $option;
+		return $this->settings->get_setting('api-key');
+	}
+
+	public function get_token() {
+		return $this->settings->get_setting('token');
 	}
 
 	private function send_request($path) {
 		$client = new GuzzleHttp\Client(['base_uri' => 'https://219l7y1jf5.execute-api.eu-central-1.amazonaws.com/production/api/']);
 		$response = $client->request('GET', $path, [
 			'headers' => [
-				'Authorization' => 'Bearer ' . $this->get_api_key()
+				'Authorization' => 'Bearer ' . $this->get_token()
 			]
 		]);
 		return json_decode($response->getBody(), true);
